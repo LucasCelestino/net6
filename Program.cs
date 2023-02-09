@@ -72,12 +72,20 @@ public static class ProductRepository
     }
 }
 
+public class Category
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+}
+
 public class Product
 {
     public int Id {get;set;}
     public string Code {get;set;}
     public string Name {get;set;}
     public string Description {get;set;}
+    public int CategoryId { get; set; }
+    public Category Category { get; set; }
 }
 
 public class ApplicationDbContext : DbContext
@@ -89,7 +97,7 @@ public class ApplicationDbContext : DbContext
         builder.Entity<Product>().Property(p => p.Code).HasMaxLength(20).IsRequired();
 
         builder.Entity<Product>().Property(p => p.Name).HasMaxLength(120).IsRequired();
-        
+
         builder.Entity<Product>().Property(p => p.Description).HasMaxLength(500).IsRequired(false);
     }
 
