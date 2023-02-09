@@ -20,9 +20,15 @@ app.MapGet("/product/{code}", ([FromRoute] string code) => {
 
 });
 
-app.MapPost("/product", (Product product) => {
-    ProductRepository.AddProduct(product);
-    return Results.Created($"/product/{product.Code}", product.Code);
+app.MapPost("/product", (ProductRequest productRequest, ApplicationDbContext context) => {
+    var category = context.Category.Where(c => c.Id == productRequest.CategoryId).First();
+
+    var product = new Product{
+        Code = productRequest.Code,
+        Name = productRequest.Name,
+        Description = productRequest.Description,
+        Category = category
+    };
 });
 
 app.MapPut("/product", (Product productParam) => {
